@@ -22,10 +22,10 @@ namespace NetHotKey {
 
     public Keys Key { get { return _key; } set { _key = value; } }
 
+    [DefaultValue(KeyModifiers.None)]
     public KeyModifiers ModifierKey { get { return _modifierKey; } set { _modifierKey = value; } }
-
-    public string Name { get { return _name; } set { _name = value; } }
-
+    
+    [DefaultValue(false)]
     public bool AutoRegister { get; set; }
 
     public event EventHandler<HotKeyEventArgs> HotKeyActive { add { _messageWindows.HotKeyActive += value; } remove { _messageWindows.HotKeyActive -= value; } }
