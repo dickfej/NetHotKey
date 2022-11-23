@@ -63,7 +63,7 @@ namespace NetHotKey {
 
     void ISupportInitialize.EndInit() {
       if (_isInit) {
-        if (AutoRegister) {
+        if (AutoRegister && !DesignMode) {
           RegisterHotKey();
         }
         _isInit = false;
