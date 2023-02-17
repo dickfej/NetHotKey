@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Windows.Forms;
 
 namespace NetHotKey {
@@ -8,11 +9,7 @@ namespace NetHotKey {
 
     private MessageWindow _messageWindows;
 
-    private Keys _key;
-
-    private KeyModifiers _modifierKey;
-
-    private string _name;
+    private HotKey _hotKey = new HotKey();
 
     private bool _isInit = false;
 
@@ -20,11 +17,9 @@ namespace NetHotKey {
 
     private bool _isRegister = false;
 
-    public Keys Key { get { return _key; } set { _key = value; } }
+    [Editor(typeof(HotKeyEditor),typeof(UITypeEditor))]
+    public HotKey HotKey { get { return _hotKey; } set { _hotKey = value; } }
 
-    [DefaultValue(KeyModifiers.None)]
-    public KeyModifiers ModifierKey { get { return _modifierKey; } set { _modifierKey = value; } }
-    
     [DefaultValue(false)]
     public bool AutoRegister { get; set; }
 
@@ -43,7 +38,7 @@ namespace NetHotKey {
     }
 
     public void RegisterHotKey() {
-      HotKeyHelper.RegisterHotKey(_messageWindows.Handle, _keyId, ModifierKey, Key);
+      HotKeyHelper.RegisterHotKey(_messageWindows.Handle, _keyId, HotKey.KeyModifiers, HotKey.Key);
       _isRegister = true;
     }
 
@@ -63,9 +58,8 @@ namespace NetHotKey {
 
     void ISupportInitialize.EndInit() {
       if (_isInit) {
-        if (AutoRegister && !DesignMode) {
+        if (AutoRegister && !DesignMode)
           RegisterHotKey();
-        }
         _isInit = false;
       }
     }
