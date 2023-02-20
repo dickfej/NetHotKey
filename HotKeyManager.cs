@@ -1,15 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace NetHotKey {
 
   public class HotKeyManager : Component, ISupportInitialize {
 
+    private int ERR_HOT_KEY_ALL_ALREADY_IN_USE = 1409;
+
     private MessageWindow _messageWindows;
 
-    private HotKey _hotKey = new HotKey();
+    private HotKey _hotKey = HotKey.None;
 
     private bool _isInit = false;
 
@@ -25,6 +27,11 @@ namespace NetHotKey {
 
     public event EventHandler<HotKeyEventArgs> HotKeyActive { add { _messageWindows.HotKeyActive += value; } remove { _messageWindows.HotKeyActive -= value; } }
 
+    public void CleanHotKey() {
+      HotKey = HotKey.None;
+      UnRegisterHotKey();
+    }
+
     public HotKeyManager() {
       _messageWindows = new MessageWindow();
       _keyId++;
@@ -38,8 +45,17 @@ namespace NetHotKey {
     }
 
     public void RegisterHotKey() {
-      HotKeyHelper.RegisterHotKey(_messageWindows.Handle, _keyId, HotKey.KeyModifiers, HotKey.Key);
-      _isRegister = true;
+      if(!HotKey.IsNone(HotKey)) {
+        if(HotKeyHelper.RegisterHotKey(_messageWindows.Handle, _keyId, HotKey.KeyModifiers, HotKey.Key))
+        _isRegister = true;
+        else {
+          int errCode =  Marshal.GetLastWin32Error();
+          if (errCode == ERR_HOT_KEY_ALL_ALREADY_IN_USE)
+            throw new HotAlreadyRegisteredException(HotKey);
+        }
+      } else {
+        throw new HotKeyIsNoneException(HotKey);
+      }
     }
 
     public void UnRegisterHotKey() {

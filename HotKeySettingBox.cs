@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace NetHotKey {
   public partial class HotKeySettingBox : TextBox {
 
-    private HotKey _hotKey = new HotKey();
+    private HotKey _hotKey =HotKey.None;
 
     [Editor(typeof(HotKeyEditor), typeof(UITypeEditor))]
     public HotKey HotKey { get { return _hotKey; } set { 
@@ -17,25 +17,20 @@ namespace NetHotKey {
       } 
     }
 
-    //public HotKeySettingBox() {
-    //  InitializeComponent();
-    //  txtBox.BackColor = System.Drawing.SystemColors.Window;
-    //}
-
     private void txtBox_KeyDown(object sender, KeyEventArgs e) {
       HotKey = HotKeyHelper.KeyEventArgs2HotKeySetting(e);
     }
 
     protected override void OnKeyDown(KeyEventArgs e) {
-      //base.OnKeyDown(e);
       HotKey = HotKeyHelper.KeyEventArgs2HotKeySetting(e);
     }
 
     protected override void OnTextChanged(EventArgs e) {
-      //base.OnTextChanged(e);
       Text = _hotKey.ToString() ;
     }
-
+    public void CleanHotKey() {
+      HotKey = HotKey.None;
+    }
   }
 
 }

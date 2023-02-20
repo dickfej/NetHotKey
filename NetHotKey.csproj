@@ -50,7 +50,10 @@
     <Compile Include="HotKey.cs" />
     <Compile Include="HotKeyEditor.cs" />
     <Compile Include="HotKeyEventArg.cs" />
+    <Compile Include="HotKeyException.cs" />
     <Compile Include="HotKeyHelper.cs" />
+    <Compile Include="HotAlreadyRegisteredException.cs" />
+    <Compile Include="HotKeyIsNoneException.cs" />
     <Compile Include="HotKeyManager.cs">
       <SubType>Component</SubType>
     </Compile>
