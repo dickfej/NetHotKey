@@ -15,9 +15,11 @@ namespace NetHotKey {
 
     private bool _isInit = false;
 
-    private static int _keyId = 0;
+    private int _keyId = 0;
 
     private bool _isRegister = false;
+
+    private static int _gobal_key = 1;
 
     [Editor(typeof(HotKeyEditor),typeof(UITypeEditor))]
     public HotKey HotKey { get { return _hotKey; } set { _hotKey = value; } }
@@ -34,7 +36,7 @@ namespace NetHotKey {
 
     public HotKeyManager() {
       _messageWindows = new MessageWindow();
-      _keyId++;
+      _keyId = _gobal_key++;
       _messageWindows.KeyId = _keyId;
       _messageWindows.HandleDestroyed += _messageWindows_HandleDestroyed;
       AutoRegister= false;

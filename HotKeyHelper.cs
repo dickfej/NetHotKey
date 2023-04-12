@@ -17,7 +17,6 @@ namespace NetHotKey {
                  IntPtr hWnd,                //要取消热键的窗口的句柄
                  int id                      //要取消热键的ID
                  );
-    //定义了辅助键的名称（将数字转变为字符以便于记忆，也可去除此枚举而直接使用数值）
 
     public static HotKey KeyEventArgs2HotKeySetting(KeyEventArgs e) {
       return new HotKey() { Ctrl = e.Control, Alt = e.Alt, Shift = e.Shift, Key = e.KeyCode };
